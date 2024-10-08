@@ -83,6 +83,15 @@ The backend is built using **Node.js** and **Express**, with **MongoDB** as the 
      - URL Parameters:
        - `projectId`: ID of the project to exit.
 
+   - **GET /user/getProjects**  
+     - Description:  
+       - Retrieves all projects from the database.
+
+   - **GET /user/getProjectById**  
+     - URL Parameters:  
+       - `projectId`: ID of the specific project to retrieve.
+
+
 
 ---
 
