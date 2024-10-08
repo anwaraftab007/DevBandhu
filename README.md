@@ -55,7 +55,7 @@ The backend is built using **Node.js** and **Express**, with **MongoDB** as the 
        }
        ```
 
-   - **GET /user/getUser**  
+   - **GET /user/**  
      - Request Headers:
        - `Authorization`: Bearer token of the logged-in user.
 
@@ -64,7 +64,7 @@ The backend is built using **Node.js** and **Express**, with **MongoDB** as the 
        - `skills`: Comma-separated string of skills (e.g., `React,Node.js`).
 
 2. **Project Routes**
-   - **POST /user/createProject**  
+   - **POST /project/create**  
      - Request Body:
        ```json
        {
@@ -75,19 +75,19 @@ The backend is built using **Node.js** and **Express**, with **MongoDB** as the 
        }
        ```
 
-   - **POST /user/joinProject/:projectId**  
+   - **POST /project/join/:projectId**  
      - URL Parameters:
        - `projectId`: ID of the project to join.
 
-   - **DELETE /user/exitProject/:projectId**  
+   - **DELETE /project/exit/:projectId**  
      - URL Parameters:
        - `projectId`: ID of the project to exit.
 
-   - **GET /user/getProjects**  
+   - **GET /project**  
      - Description:  
        - Retrieves all projects from the database.
 
-   - **GET /user/getProjectById**  
+   - **GET /project/:projectId**  
      - URL Parameters:  
        - `projectId`: ID of the specific project to retrieve.
 
