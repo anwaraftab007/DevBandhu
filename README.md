@@ -95,3 +95,34 @@ REFRESH_TOKEN_EXPIRY=30d
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+
+
+## **Installation**
+
+Clone the repository: git clone https://github.com/anwaraftab007/devsangha.git
+cd devsangha/backend
+
+## **Install Dependencies**
+
+npm install
+
+## **Set Up Your MongoDB**
+
+Set up your MongoDB database and create the .env file as described above.
+
+## **Usage**
+
+Start the server: npm start
+The server will run on `http://localhost:3000`. Use tools like Postman to test the API routes.
+
+## **Frontend**
+
+Under Construction: The frontend is being developed and will provide a user-friendly interface to interact with the backend APIs.
+
+## **Contributing**
+
+Contributions are welcome! Please feel free to submit a pull request.
+
+## **License**
+
+This project is licensed under the MIT License - see the LICENSE file for details.
