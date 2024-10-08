@@ -67,8 +67,6 @@ const exitProject = asyncHandler( async (req, res) => {
 	// but, in second case, we'll have to delete that project including removing that project id from all its member user
 	// Case 1: User is a member but not a leader
 	if( !project.leader.equals(userId) ){
-		console.log("leader :", project.leader)
-		console.log("User :", userId)
 		project.members.pull(userId)
 		await project.save()
 		// Now update the user project list
@@ -91,4 +89,19 @@ const exitProject = asyncHandler( async (req, res) => {
 		.json(new ApiResponse(200, {}, "Project deleted Successfully.."))
 	})
 
-export { createProject, joinProject, exitProject }
+const getProjects = asyncHandler( async (_, res) => {
+	const projects = await Project.find().select("-__v")
+	return res.status(200)
+		.json(new ApiResponse(200, projects, "Projects fetched successfully.."))
+})
+
+const getProjectById = asyncHandler( async (req, res) => {
+	const { projectId } = req.query
+	const project = await Project.findById(projectId)
+	if(!project)
+		throw new ApiError(405, "Project does'nt exist")
+	return res.status(200)
+		.json(new ApiResponse(200, project, "Project fetched Successfully.."))
+})
+
+export { createProject, joinProject, exitProject, getProjects, getProjectById }

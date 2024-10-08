@@ -56,7 +56,7 @@ const registerUser = asyncHandler( async(req, res) => {
 
 const login = asyncHandler(async (req, res) => {
 	// Extract data from req url
-	const { username, email, password } = req.query
+	const { username, email, password } = req.body
 	// Debugging
 	console.log(req.query)
 	// Validation
@@ -107,7 +107,7 @@ const logout = asyncHandler(async (req, res) => {
 })
 
 const changePassword = asyncHandler( async (req, res) => {
-  	 const {oldPassword, newPassword} = req.query
+  	 const {oldPassword, newPassword} = req.body
 
    	const user = await User.findById(req.user?._id)
    	const isPasswordCorrect = user.isPasswordCorrect(oldPassword)
@@ -127,7 +127,7 @@ const getUser = asyncHandler( async (req, res) => {
 })
 
 const updateSkills = asyncHandler( async (req, res) => {
-	const {skills} = req.query
+	const {skills} = req.body
 	const newSkills = skills ? skills.split(",") : []
 	if(newSkills.length === 0){
 		return res.status(400)
