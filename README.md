@@ -34,8 +34,7 @@ The backend is built using **Node.js** and **Express**, with **MongoDB** as the 
                "type": "string",
                "enum": ["React", "Node.js", "JavaScript", "Python", "Java", "C#", "Ruby", "Go", "PHP", "Django"]
              }
-                   ]
-       }
+        ]}
        ```
 
    - **POST /user/login**  
