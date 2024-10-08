@@ -79,7 +79,7 @@ The backend is built using **Node.js** and **Express**, with **MongoDB** as the 
      - URL Parameters:
        - `projectId`: ID of the project to join.
 
-   - **DELETE /user/exitProject**  
+   - **DELETE /user/exitProject/:projectId**  
      - URL Parameters:
        - `projectId`: ID of the project to exit.
 
