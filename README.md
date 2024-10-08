@@ -29,8 +29,12 @@ The backend is built using **Node.js** and **Express**, with **MongoDB** as the 
          "username": "string",
          "email": "string",
          "password": "string",
-         "skills": ["string"]
-       }
+         "skills": [
+             {
+               "type": "string",
+               "enum": ["React", "Node.js", "JavaScript", "Python", "Java", "C#", "Ruby", "Go", "PHP", "Django"]
+             }
+        ]}
        ```
 
    - **POST /user/login**  
@@ -114,20 +118,27 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
 ## **Installation**
 
-Clone the repository: git clone https://github.com/anwaraftab007/devsangha.git</br>
-cd devsangha/backend
+Clone the repository: 
+
+```plaintext
+git clone https://github.com/anwaraftab007/DevBandhu.git
+cd DevBandhu/backend
+```
 
 ## **Install Dependencies**
-
+```plaintext
 npm install
-
+```
 ## **Set Up Your MongoDB**
 
 Set up your MongoDB database and create the .env file as described above.
 
 ## **Usage**
 
-Start the server: npm start
+Start the server: 
+```plaintext
+npm start
+```
 The server will run on `http://localhost:3000`. Use tools like Postman to test the API routes.
 
 ## **Frontend**
