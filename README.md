@@ -118,20 +118,26 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
 ## **Installation**
 
-Clone the repository: git clone https://github.com/anwaraftab007/devsangha.git</br>
+Clone the repository: 
+```plaintext
+git clone https://github.com/anwaraftab007/devsangha.git</br>
 cd devsangha/backend
+```
 
 ## **Install Dependencies**
-
+```plaintext
 npm install
-
+```
 ## **Set Up Your MongoDB**
 
 Set up your MongoDB database and create the .env file as described above.
 
 ## **Usage**
 
-Start the server: npm start
+Start the server: 
+```plaintext
+npm start
+```
 The server will run on `http://localhost:3000`. Use tools like Postman to test the API routes.
 
 ## **Frontend**
