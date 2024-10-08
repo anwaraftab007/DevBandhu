@@ -34,8 +34,6 @@ const registerUser = asyncHandler( async(req, res) => {
 	if(!avatar)
 		avatar = { url: "https://dummyimage.com/300" };	
 	
-	console.log("Avatar Local Path:", avatarLocalPath);
-	console.log("Uploaded Avatar:", avatar);
 	
 	// Now , it's time to create a new user
 	const user = await User.create({
@@ -51,7 +49,7 @@ const registerUser = asyncHandler( async(req, res) => {
 	if(!isUserCreated)
 		throw new ApiError(500, "User not Created..")
 	return res.status(200)
-		.json(new ApiResponse({ message: "User created successfully" }))
+		.json(new ApiResponse(200,{}, "User Created Successfully.." ))
 })
 
 const login = asyncHandler(async (req, res) => {
