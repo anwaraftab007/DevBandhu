@@ -1,0 +1,49 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Build directories
+frontend/build/
+backend/dist/
+frontend/coverage/
+backend/coverage/
+
+# Environment files
+frontend/.env
+backend/.env
+frontend/.env.local
+backend/.env.local
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS specific files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Editor specific files
+*.sublime-workspace
+*.sublime-project
+
+# Miscellaneous
+*.bak
+*.swp
+
+# Frontend specific
+frontend/src/**/*.test.js
+frontend/src/**/*.spec.js
+
+# Backend specific
+backend/tests/
+backend/**/*.test.js
+backend/**/*.spec.js
+
