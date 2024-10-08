@@ -1,49 +1,24 @@
-# Node.js
-node_modules/
-npm-debug.log
-yarn-error.log
-package-lock.json
-yarn.lock
-
-# Build directories
-frontend/build/
-backend/dist/
-frontend/coverage/
-backend/coverage/
-
-# Environment files
-frontend/.env
-backend/.env
-frontend/.env.local
-backend/.env.local
-
-# Log files
+# Logs
+logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Temporary files
-*.tmp
-*.temp
+node_modules
+dist
+dist-ssr
+*.local
 
-# OS specific files
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-Thumbs.db
-.idea/
-.vscode/
-
-# Editor specific files
-*.sublime-workspace
-*.sublime-project
-
-# Miscellaneous
-*.bak
-*.swp
-
-# Frontend specific
-frontend/src/**/*.test.js
-frontend/src/**/*.spec.js
-
-# Backend specific
-backend/tests/
-backend/**/*.test.js
-backend/**/*.spec.js
-
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
