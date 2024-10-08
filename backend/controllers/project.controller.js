@@ -53,4 +53,42 @@ const joinProject = asyncHandler( async(req, res) => {
 		.json(new ApiResponse(200, project, "User successfully joined the project.."))
 })
 
-export { createProject, joinProject }
+const exitProject = asyncHandler( async (req, res) => {
+	const { projectId } = req.query
+	const userId = req.user._id
+	const project = await Project.findById(projectId)
+	// Check wheather the project is or not 
+	if(!project)
+		throw new ApiError(401, "Project not found..")
+	if(!project.members.includes(userId))
+		throw new ApiError(401, "User is not a part of this project..")
+	// Now their is 2 cases - whether the user is member / leader
+	// In first case, we'll just simply pop the user from member list
+	// but, in second case, we'll have to delete that project including removing that project id from all its member user
+	// Case 1: User is a member but not a leader
+	if( !project.leader.equals(userId) ){
+		console.log("leader :", project.leader)
+		console.log("User :", userId)
+		project.members.pull(userId)
+		await project.save()
+		// Now update the user project list
+		await User.findByIdAndUpdate(userId, {
+			$pull: { projects: projectId }
+		}, { new: true })
+
+		return res.status(200)
+			.json(new ApiResponse(200, {}, "User removed Successfully.."))
+	}
+	// Case 2: User is a possible leader as well as member
+	await User.updateMany({
+		_id: { $in: project.members }},
+		{ $pull: { projects: projectId }
+		}, { new: true })
+	//Delete the project with respective id
+	await Project.findByIdAndDelete(projectId)
+	
+	return res.status(200)
+		.json(new ApiResponse(200, {}, "Project deleted Successfully.."))
+	})
+
+export { createProject, joinProject, exitProject }

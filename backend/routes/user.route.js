@@ -2,7 +2,7 @@ import { Router } from "express";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { registerUser, login, logout, changePassword, getUser, updateSkills } from "../controllers/user.controller.js";
-import { createProject, joinProject } from "../controllers/project.controller.js";
+import { createProject, joinProject, exitProject } from "../controllers/project.controller.js";
 
 const router = Router();
 
@@ -18,5 +18,6 @@ router.route("/updateSkills").post(verifyJWT, updateSkills);
 
 router.route("/createProject").post(verifyJWT, createProject);
 router.route("/joinProject").post(verifyJWT, joinProject);
+router.route("/exitProject").post(verifyJWT, exitProject);
 
 export default router;
