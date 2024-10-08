@@ -29,7 +29,12 @@ The backend is built using **Node.js** and **Express**, with **MongoDB** as the 
          "username": "string",
          "email": "string",
          "password": "string",
-         "skills": ["string"]
+         "skills": [
+             {
+               "type": "string",
+               "enum": ["React", "Node.js", "JavaScript", "Python", "Java", "C#", "Ruby", "Go", "PHP", "Django"]
+             }
+       ]
        }
        ```
 
