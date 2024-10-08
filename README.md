@@ -1,4 +1,4 @@
-# Project Name: DevBandhu
+# DevBandhu
 
 ## Description
 DevBandhu is a collaborative platform designed to connect developers for project sharing and skill development. This repository contains the backend setup for the application, while the frontend is currently under construction.
