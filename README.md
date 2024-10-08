@@ -55,7 +55,7 @@ The backend is built using **Node.js** and **Express**, with **MongoDB** as the 
        }
        ```
 
-   - **GET /user/**  
+   - **GET /user**  
      - Request Headers:
        - `Authorization`: Bearer token of the logged-in user.
 
