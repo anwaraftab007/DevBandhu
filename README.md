@@ -121,8 +121,8 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 Clone the repository: 
 
 ```plaintext
-git clone https://github.com/anwaraftab007/devsangha.git
-cd devsangha/backend
+git clone https://github.com/anwaraftab007/DevBandhu.git
+cd DevBandhu/backend
 ```
 
 ## **Install Dependencies**
