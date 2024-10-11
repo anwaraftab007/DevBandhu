@@ -96,7 +96,7 @@ const getProjects = asyncHandler( async (_, res) => {
 })
 
 const getProjectById = asyncHandler( async (req, res) => {
-	const { projectId } = req.query
+	const { projectId } = req.params
 	const project = await Project.findById(projectId)
 	if(!project)
 		throw new ApiError(405, "Project does'nt exist")

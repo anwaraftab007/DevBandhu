@@ -55,10 +55,11 @@ const registerUser = asyncHandler( async(req, res) => {
 const login = asyncHandler(async (req, res) => {
 	// Extract data from req url
 	const { username, email, password } = req.body
-	// Debugging
-	console.log(req.query)
+
+	// Check wheater user is already login or not
+			
 	// Validation
-	if (!(email && username) && !password)
+	if (!(email || username) || !password)
 		throw new ApiError(401, "Email or Password is required..")
 	const user = await User.findOne({
 	$or: [{username}, {email}]
@@ -124,6 +125,16 @@ const getUser = asyncHandler( async (req, res) => {
 		.json( new ApiResponse(200, user, "Data fetched Successfully.."))
 })
 
+const getUserById = asyncHandler( async (req, res) => {
+	if(!req.params.id){
+		return res.status(200)
+			.json(new ApiError(400, "Cannot get user without ID"))
+	}
+	const user = await User.findById(req.params.id).select("-password -refreshToken")
+	return res.status(200)
+		.json(new ApiResponse(200, user, "Data fetched successfully"))
+})
+
 const updateSkills = asyncHandler( async (req, res) => {
 	const {skills} = req.body
 	const newSkills = skills ? skills.split(",") : []
@@ -140,4 +151,4 @@ const updateSkills = asyncHandler( async (req, res) => {
 		.json(new ApiResponse(200, user, "Skills added Successfull.."))
 })
 
-export { registerUser, login, logout, changePassword, getUser, updateSkills }
+export { registerUser, login, logout, changePassword, getUser, getUserById, updateSkills }
