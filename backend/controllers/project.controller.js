@@ -5,11 +5,11 @@ import { Project } from "../models/project.model.js"
 import { User } from "../models/user.model.js"
 
 const createProject = asyncHandler( async (req, res) => {
-	const { title, description, skills } = req.query
-	const trimSkills = skills ? skills.split(",") : []
+	const { title, description, skills } = req.body
+//	const trimSkills = skills ? skills.split(",") : []
 	const leaderId = req.user._id
-	if( !title || !description || !skills )
-		throw new ApiError(400, "All fields are required..")
+//	if( !title || !description || !skills )
+//		throw new ApiError(400, "All fields are required..")
 
 	// Check if project is existed with the same title already
 	const existingProject = await Project.findOne({ title })
@@ -19,7 +19,7 @@ const createProject = asyncHandler( async (req, res) => {
 	const newProject = await Project.create({
 		title,
 		description,
-		skills: trimSkills,
+		skills,
 		leader: leaderId,
 		members: [leaderId]
 	})
@@ -33,14 +33,14 @@ const createProject = asyncHandler( async (req, res) => {
 })
 
 const joinProject = asyncHandler( async(req, res) => {
-	const { projectId } = req.query
+	const { projectId } = req.params
 	const userId = req.user._id
 	const project = await Project.findById(projectId)
 	if(!project)
 		throw new ApiError(400, "Project not Found..")
 	// check if user already joined
 	if(project.members.includes(userId))
-		throw new ApiError(400, "User is already a part of this project..")
+		throw new ApiError(402, "User is already a part of this project..")
 	// if not, then add the user to the pproject
 	project.members.push(userId)
 	await project.save()

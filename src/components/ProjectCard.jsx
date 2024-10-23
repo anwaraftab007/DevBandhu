@@ -1,6 +1,8 @@
 import React from 'react'
+import { base } from '../constant';
 
 const ProjectCard = ({ project, index }) => {
+    
     return (
         <div key={index} className='max-w-[285px] max-h-[380px] bg-blue-600 text-white text-lg p-4 rounded-xl shadow-lg'>
             <div className="wrapper flex flex-col">

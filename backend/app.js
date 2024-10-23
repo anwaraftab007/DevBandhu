@@ -16,9 +16,11 @@ app.use(cookieParser())
 app.get('/api', (_, res)=>{
 	res.send("/API route working");
 })
+import auth from "./routes/auth.route.js"
 import userRouter from "./routes/user.route.js"
 import projectRouter from "./routes/project.route.js"
 app.use("/user", userRouter)
 app.use("/project", projectRouter)
+app.use("/api", auth)
 export {app};
 

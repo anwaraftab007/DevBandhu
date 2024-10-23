@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { base } from '../constant'
+import { useNavigate } from 'react-router-dom'
 const Register = () => {
     const [formData, setFormData] = useState({
         fullName: '',
@@ -9,6 +10,7 @@ const Register = () => {
         skills: ''
     })
     const [message, setMessage] = useState('')
+    const navigate = useNavigate()
     const handleChange = (e) => {
         const { name, value } = e.target
         setFormData({ ...formData, [name]: value })
@@ -24,15 +26,16 @@ const Register = () => {
                 body: JSON.stringify(formData)
             })
             const data = await response.json()
-            if(response.ok)
+            if(response.ok){
                 setMessage(data.message)
+                navigate('/') 
+            }
             else
                 setMessage(data.message)
         }catch(error){
             setMessage(error)
         }
     }
-    
   return (
     <div>
         <h1>Register</h1>

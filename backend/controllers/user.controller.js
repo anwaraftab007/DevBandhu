@@ -3,6 +3,106 @@ import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/user.model.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
+import nodemailer from "nodemailer"
+import jwt from "jsonwebtoken"
+const base = 'http://localhost:5999';
+const sendVerificationEmail = async (user) => {
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    expiresIn: '1h', // Token expires in 1 hour
+  });
+
+  const verificationUrl = `${base}/verify-email?token=${token}`;
+
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  await transporter.sendMail({
+    from: '"DevBandhu" <noreply@yourapp.com>',
+    to: user.email,
+    subject: 'Verify your email address',
+    html: `<p>Click <a href="${verificationUrl}">here</a> to verify your email.</p>`,
+  });
+};
+
+// Email Verification Route
+const verifyEmail = async (req, res) => {
+  const { token } = req.body;
+  
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
+    // Update the user's verification status in the database
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid token' });
+    }
+
+    user.isVerified = true;
+    await user.save();
+
+    res.json({ message: 'Email successfully verified!' });
+  } catch (error) {
+    res.status(400).json({ message: 'Invalid or expired token' });
+  }
+};
+const verifyResetPassword = asyncHandler( async (req, res) => {
+	const { password, token } = req.body;
+        
+ 	try {
+   	 const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    	 const userId = decoded.userId;
+    	const user = await User.findById(userId);
+    	if (!user) {
+      	return res.status(400).json({ message: 'Invalid token' });
+    	}
+		user.password = password
+		await user.save({ validateBeforeSave: false })
+		return res.status(200)
+			.json( new ApiResponse(200, {}, "Password changed Successfully.."))
+	} catch (error) {
+		res.status(400).json({message: 'Invalid or expired token'})
+	}
+})
+const sendResetPasswordEmail = async (user) => {
+	const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+		expiresIn: '1h',
+	});
+	const verificationUrl = `${base}/reset-password=${token}`;
+
+	const transporter = nodemailer.createTransport({
+		service: 'Gmail',
+		auth: {
+			user: process.env.EMAIL_USER,
+			pass: process.env.EMAIL_PASS,
+		},
+	})
+	try{
+	await transporter.sendMail({
+		from: '"DevBandhu" <noreply@devbandhu.in>',
+		to: user.email,
+		subject: 'Reset your Password',
+		html: `<p><a href="${verificationUrl}"> Click here <a> to reset your email. <p> `
+	});
+	} catch(error){
+		console.log(error)
+	}
+};
+// Resend Verification Email
+const resendVerificationEmail = async (req, res) => {
+	if(req.user?.isVerified){
+		return res.status(300)
+			.json(new ApiResponse(300, {}, "User already verified."))
+	}
+	await sendVerificationEmail(req.user)
+	return res.status(200)
+		.json(new ApiResponse(200, {}, "Verification link resend."))
+}
 
 const generateAccessAndRefreshToken = async (userId) => {
 	const user = await User.findById(userId)
@@ -48,10 +148,28 @@ const registerUser = asyncHandler( async(req, res) => {
 	const isUserCreated = await User.findById(user._id).select("-password -refreshToken")
 	if(!isUserCreated)
 		throw new ApiError(500, "User not Created..")
+	console.log("Before sending verification mail")
+	await sendVerificationEmail(isUserCreated)
+	console.log("after sending verification mail")
 	return res.status(200)
 		.json(new ApiResponse(200,{}, "User Created Successfully.." ))
 })
 
+const resetPassword = async (req, res) => {
+	const { email } = req.body
+	const isUserExisted = await User.findOne({email}).select("-password -refreshToken")
+	if(!isUserExisted)
+		return res.status(300).json(new ApiResponse(300, {}, "Email Existed"))
+		//throw new ApiError(400, "Invalid email")
+//	const token = jwt.sign({
+//			userId: user._id },
+//			process.env.JWT_SECRET,
+//			{ expiresIn: '1h'
+//			});
+	await sendResetPasswordEmail(isUserExisted);
+return res.status(200).json({ message: 'Reset password email sent successfully.' });
+}
+						
 const login = asyncHandler(async (req, res) => {
 	// Extract data from req url
 	const { username, email, password } = req.body
@@ -78,7 +196,7 @@ const login = asyncHandler(async (req, res) => {
 	const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 	// Set cookies and send data in response
 	res.cookie("accessToken", accessToken, { httpOnly: true, secure: true })
-	res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true})
+	res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true })
 	// send a res
 	return res.status(200)
 		.json(
@@ -151,4 +269,4 @@ const updateSkills = asyncHandler( async (req, res) => {
 		.json(new ApiResponse(200, user, "Skills added Successfull.."))
 })
 
-export { registerUser, login, logout, changePassword, getUser, getUserById, updateSkills }
+export { registerUser, verifyEmail, resendVerificationEmail, resetPassword, verifyResetPassword, login, logout, changePassword, getUser, getUserById, updateSkills }

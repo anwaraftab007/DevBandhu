@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { base } from '../constant';
 import ProjectCard from '../components/ProjectCard';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Profile = () => {
     const [user, setUser] = useState(null);
     const [projects, setProjects] = useState([]);
     const [pnf, setPnf] = useState(false);
-
+    const navigate = useNavigate()
     useEffect(() => {
         getUser();
     }, []);
@@ -20,6 +20,8 @@ const Profile = () => {
             });
 
             if (!response.ok) {
+                if(response.status === 401)
+                    navigate('/')
                 throw new Error(`Error: ${response.statusText || 'Failed to fetch user data'}`);
             }
 
@@ -62,17 +64,41 @@ const Profile = () => {
         }
     };
 
+    const handleResendVerificationEmail = async () => {
+        const res = await fetch(`${base}/user/resendVerificationEmail`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+        )
+        if (!res.ok) {
+            alert(res.message || 'Error while sending verification email..')
+            return;
+        }
+        const data = await res.json()
+        if (data.success) {
+            alert('Verification email sent successfully')
+        }
+    }
+
     const Info = (user) => {
         return (
             <div className="w-full h-screen bg-slate-900 text-white text-3xl flex flex-col space-y-4 justify-center items-center">
+                {!user.isVerified && (
+                    <button onClick={handleResendVerificationEmail} className="p-4 bg-blue-600 text-white font-bold text-2xl">
+                        Resend Verification Email
+                    </button>
+                )}
                 <h1>Full Name: {user.fullName}</h1>
                 <h1>Username: {user.username}</h1>
                 <h1>Email: {user.email}</h1>
                 <h1>Joined Project: {projects.length === 0 && "No projects found"}</h1>
                 {projects && projects.map((project, index) => (
-                    <Link to={`/projects/${project._id}`}>
+                    <Link to={`/project?projectId=${project._id}`} 
+                    key={index}>
                        <ProjectCard
-                        key={index}
                         project={project}
                         index={index}
                     /> 

@@ -29,7 +29,7 @@ const AllProjects = () => {
     <div className='w-full flex flex-row gap-4 m-4 max-sm:flex-col justify-around items-center'>
       {projects && projects.map((project, index) => {
       return (
-        <Link to={`/projects/${project._id}`} key={index}>
+        <Link to={`/project?projectId=${project._id}`} key={index}>
         <ProjectCard 
         index={index}
         project={project}
